@@ -14,7 +14,7 @@ const Card = ({data}) => {
                 <h3 className='text-lg font-semibold mb-2'>{jobTitle}</h3>
                 <div className='text-primary/70 text-base flex flex-wrap gap-2 mb-2'>
                     <span className='flex items-center gap-2'><FiMapPin/>{jobLocation}</span>
-                    <span className='flex items-center gap-2'><FiClock/>{jobLocation}</span>
+                    <span className='flex items-center gap-2'><FiClock/>{experienceLevel}</span>
                     <span className='flex items-center gap-2'><FaMoneyBillTrendUp/>{minPrice}-{maxPrice}</span>
                     <span className='flex items-center gap-2'><FiCalendar/>{postingDate}</span>
                 </div>
