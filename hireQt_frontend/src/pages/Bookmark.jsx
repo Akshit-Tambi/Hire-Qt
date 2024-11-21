@@ -25,7 +25,7 @@ const Bookmark = () => {
                                 <td className="p-4">UI/UX Designer</td>
                                 <td className="p-4">Raycast corp</td>
                                 <td className="p-4">
-                                    <button className="bg-green-500 text-white p-2 rounded">Apply</button>
+                                    <button className="bg-cyan-500 text-white p-2 rounded">Apply</button>
                                 </td>
                                 <td className="p-4">
                                     <button className="bg-red-500 text-white p-2 rounded">Delete</button>
@@ -36,7 +36,7 @@ const Bookmark = () => {
                                 <td className="p-4">DevOps Engineer</td>
                                 <td className="p-4">Trainline group</td>
                                 <td className="p-4">
-                                    <button className="bg-green-500 text-white p-2 rounded">Apply</button>
+                                    <button className="bg-cyan-500 text-white p-2 rounded">Apply</button>
                                 </td>
                                 <td className="p-4">
                                     <button className="bg-red-500 text-white p-2 rounded">Delete</button>
@@ -47,7 +47,7 @@ const Bookmark = () => {
                                 <td className="p-4">Software Developer</td>
                                 <td className="p-4">Linear company</td>
                                 <td className="p-4">
-                                    <button className="bg-green-500 text-white p-2 rounded">Apply</button>
+                                    <button className="bg-cyan-500 text-white p-2 rounded">Apply</button>
                                 </td>
                                 <td className="p-4">
                                     <button className="bg-red-500 text-white p-2 rounded">Delete</button>

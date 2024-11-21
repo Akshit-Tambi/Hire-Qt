@@ -2,7 +2,7 @@ import React from 'react';
 
 const Button1 = ({ text, onClick, className }) => {
 return (
-    <button className={`bg-green-500 text-white font-bold py-3 px-6 rounded-full flex items-center gap-3 hover:bg-gray-900 transition duration-200 ${className}`}
+    <button className={`bg-cyan-500 text-white font-bold py-3 px-6 rounded-full flex items-center gap-3 hover:bg-gray-900 transition duration-200 ${className}`}
     onClick={onClick}>
     {text}
 <div className="flex justify-center items-center">

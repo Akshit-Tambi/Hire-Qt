@@ -8,29 +8,29 @@
   "education": [
     {
       "institution": "",
-      "major": "electronics and communications",
-      "cgpa": "76.2"
+      "major": "",
+      "cgpa": ""
     }
   ],
   "workExperience": [
     {
-      "title": "AI Intern",
-      "company": "Infiheal",
-      "startMonth": "2024-05",
-      "endMonth": "2024-08",
-      "description": "Innovative Tool Development: Led the development of a Paraphrasing tool, employing advanced NLP\n techniques and transfer learning to create 5 unique tones, enhancing efficiency in content creation.– AI-based SEO Enhancement: Designed an Optimization tool integrating state-of-the-art algorithms to\n improve website visibility and performance, thereby optimizing digital marketing strategies."
+      "title": "",
+      "company": "",
+      "startMonth": "",
+      "endMonth": "",
+      "description": ""
     }
   ],
   "projects": [
     {
-      "name": "HireQT",
-      "description": " Personalized Job Matching: Implemented dynamic web scraping with Selenium to provide tailored job\n listings. Applied NLP and machine learning for resume analysis and job recommendations.– Tailored Applications with ATS: Using NLP and large language models to create personalized resumes\n and cover letters based on a custom scoring system. Focused on ethical AI use and user empowerment.",
-      "technologies": "cv, python"
+      "name": "",
+      "description": "",
+      "technologies": ""
     }
   ],
   "links": {
-    "linkedin": "https://www.linkedin.com/in/diya-shah-b24832226",
-    "github": "https://github.com/DiyaShah7",
+    "linkedin": "",
+    "github": "",
     "codingProfile": ""
   },
   "customJobProfile": "data science intern",

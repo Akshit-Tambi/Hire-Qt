@@ -23,7 +23,7 @@ const Home = () => {
       {/* Header */}
       <header className="w-full flex justify-between items-center shadow-md px-4 sm:px-14 py-4 bg-cyan-50">
         <div className="text-3xl sm:text-4xl font-bold text-slate-700 flex items-center">
-          <span className="text-green-600 mr-2">🚀</span> HireQT
+          <span className="text-cyan-600 mr-2">🚀</span> HireQT
         </div>
         <div className="flex justify-between items-center gap-2 relative">
           <Button1
@@ -86,7 +86,7 @@ const Home = () => {
           />
         </div>
         <div className="w-1/2 flex flex-col justify-center items-center p-5">
-          <h1 className="text-6xl font-bold text-green-600 mb-4 text-center">
+          <h1 className="text-6xl font-bold text-cyan-600 mb-4 text-center">
             HireQT
           </h1>
           <p className="text-3xl text-black font-bold mb-4 text-center">
@@ -101,7 +101,7 @@ const Home = () => {
       {/* Key Features Section */}
       <section className="p-10 bg-cyan-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-green-600 mb-8">
+          <h2 className="text-4xl font-bold text-center text-cyan-600 mb-8">
             Key Features
           </h2>
           <p className="text-center text-lg text-gray-700 mb-8">
@@ -140,7 +140,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-green-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/resume-parser')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/resume-parser')}>
                   Try It Out
                 </button>
               </div>
@@ -159,7 +159,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-green-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/resume-generator')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/resume-generator')}>
                   Try It Out
                 </button>
               </div>
@@ -178,7 +178,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-green-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/application-tracking')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/application-tracking')}>
                   Try It Out
                 </button>
               </div>
@@ -197,7 +197,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-green-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/cold-emailing')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/cold-emailing')}>
                   Try It Out
                 </button>
               </div>
@@ -209,7 +209,7 @@ const Home = () => {
       {/* Meet The Team Section */}
       <section className="p-10 bg-cyan-50 w-full flex flex-col items-center">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-green-600 mb-8">
+          <h2 className="text-4xl font-bold text-cyan-600 mb-8">
             Meet The Team
           </h2>
           <div className="flex flex-col space-y-8 items-center">
