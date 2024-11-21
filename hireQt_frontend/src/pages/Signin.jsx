@@ -28,14 +28,16 @@ const Signin = () => {
 
   async function handleClick() {
     const token = await signin(formData.email , formData.password);
+    console.log(token);
     if(token){
       setToken(token);
       setFormData({
         email: "",
         password: "",
       })
+      console.log(formData);
       setShowError(false);
-      navigate("/dashboard");
+      navigate("/profile");
     }else{
       setShowError(true);
     }

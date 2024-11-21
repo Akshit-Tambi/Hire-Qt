@@ -5,7 +5,11 @@ const { authMiddleware } = require("./middleware/middleware");
 const app =express();
 
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Frontend URL
+    credentials: true,              // Allow credentials (cookies, headers, etc.)
+}));
+
 app.use(express.json());
 app.get("/" , (req,res)=>{
     res.json("hello WOrld")
