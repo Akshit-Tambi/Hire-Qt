@@ -7,10 +7,10 @@ const Location = ({ handleChange, selectedValue }) => {
             <h4 className='text-lg font-medium mb-2'>Location</h4>
             <div>
                 <InputRadio handleChange={handleChange} value="" title="All" name="location" checked={selectedValue === ""} />
-                <InputRadio handleChange={handleChange} value="london" title="London" name="location" checked={selectedValue === "london"} />
-                <InputRadio handleChange={handleChange} value="seattle" title="Seattle" name="location" checked={selectedValue === "seattle"} />
-                <InputRadio handleChange={handleChange} value="madrid" title="Madrid" name="location" checked={selectedValue === "madrid"} />
-                <InputRadio handleChange={handleChange} value="boston" title="Boston" name="location" checked={selectedValue === "boston"} />
+                <InputRadio handleChange={handleChange} value="gurugram" title="Gururam" name="location" checked={selectedValue === "gurugram"} />
+                <InputRadio handleChange={handleChange} value="mumbai" title="Mumbai" name="location" checked={selectedValue === "mumbai"} />
+                <InputRadio handleChange={handleChange} value="banglore" title="Banglore" name="location" checked={selectedValue === "banglore"} />
+                <InputRadio handleChange={handleChange} value="hyderabad" title="Hyderabad" name="location" checked={selectedValue === "hyderabad"} />
             </div>
         </div>
     )
