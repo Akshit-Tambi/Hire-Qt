@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { NavLink } from 'react-router-dom';
 import { FaBars } from "react-icons/fa";
 import ProfileButton from './ProfileButton';
+import{Dropdown} from 'rsuite';
 
 
 const NavBar = () => {
@@ -12,15 +13,15 @@ const NavBar = () => {
     }
     const navItems=[
         {path:"/", title:"Start a search"},
-        {path:"/my-job", title:"My Jobs"},
-        {path:"/salary", title:"Salary Estimate"},
+        {path:"/applied", title:"Applied Jobs"},
+        {path:"/bookmark", title:"Bookmarked Jobs"},
         {path:"/post-job", title:"Post a Job"},
     ]
 
     return (
         <div>
-            <header className='max-w-screen-2xl container mx-auto xl:px-24 py-4'>
-                <nav className='flex justify-between items-center py-6'>
+            <header className='max-w-screen-2xl container mx-auto xl:px-24 py-2'>
+                <nav className='flex justify-between items-center py-2'>
                     <a href='/dashboard' className='flex items-center gap-2 text-3xl sm:text-4xl font-bold text-slate-700'>
                         <svg
 
@@ -39,7 +40,7 @@ const NavBar = () => {
                             />
                             <circle cx="16.9857" су="17.4857" r="12.0143" fill="#3575E2" />
                         </svg>{" "}
-                        <span>Job Portal</span>
+                        <span>HireQT</span>
                     </a>
                     <ul className='hidden md:flex gap-12'>
                         {navItems.map(({path , title})=>(

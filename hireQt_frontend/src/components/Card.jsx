@@ -4,10 +4,10 @@ import {FiMapPin , FiClock ,FiCalendar} from "react-icons/fi"
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 
 const Card = ({data}) => {
-    const {companyName, companyLogo ,jobTitle, minPrice, maxPrice, jobLocation, experienceLevel,postingDate,description} = data;
+    const {id,companyName, companyLogo ,jobTitle, minPrice, maxPrice, jobLocation, experienceLevel,postingDate} = data;
   return (
     <section className='card'>
-        <Link to={"/"} className='flex gap-4 flex-col sm:flex-row items-start'>
+        <Link to={`/job/${id}`} className='flex gap-4 flex-col sm:flex-row items-start'>
             <img src={companyLogo} alt=''/>
             <div >
                 <h4 className='text-primary mb-1'>{companyName}</h4>
@@ -18,7 +18,6 @@ const Card = ({data}) => {
                     <span className='flex items-center gap-2'><FaMoneyBillTrendUp/>{minPrice}-{maxPrice}</span>
                     <span className='flex items-center gap-2'><FiCalendar/>{postingDate}</span>
                 </div>
-                <p className='text-base text-primary/70'>{description}</p>
             </div>
         </Link>
     </section>
