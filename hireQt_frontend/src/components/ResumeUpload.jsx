@@ -4,7 +4,7 @@ import axios from 'axios';
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
-
+  const [resumeData, setResumeData] = useState(null);
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -22,15 +22,16 @@ const ResumeUpload = () => {
     }
 
     const formData = new FormData();
-    formData.append('resume', file);
+    formData.append('pdf_file', file);
 
     try {
-      const response = await axios.post('/api/upload-resume', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/parse_resume', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       setUploadStatus('Resume uploaded successfully!');
+      setResumeData(response.data);
       console.log(response.data);
     } catch (error) {
       setUploadStatus('Failed to upload resume.');

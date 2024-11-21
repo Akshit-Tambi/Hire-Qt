@@ -1,0 +1,38 @@
+{
+  "firstName": "Diya",
+  "lastName": "Shah",
+  "email": "21uec050@lnmiit.ac.in",
+  "phone": "9168557097",
+  "summary": "",
+  "skills": "",
+  "education": [
+    {
+      "institution": "",
+      "major": "electronics and communications",
+      "cgpa": "76.2"
+    }
+  ],
+  "workExperience": [
+    {
+      "title": "AI Intern",
+      "company": "Infiheal",
+      "startMonth": "2024-05",
+      "endMonth": "2024-08",
+      "description": " Personalized Job Matching: Implemented dynamic web scraping with Selenium to provide tailored job\n listings. Applied NLP and machine learning for resume analysis and job recommendations.– Tailored Applications with ATS: Using NLP and large language models to create personalized resumes\n and cover letters based on a custom scoring system. Focused on ethical AI use and user empowerment."
+    }
+  ],
+  "projects": [
+    {
+      "name": "Hireqt",
+      "description": " Personalized Job Matching: Implemented dynamic web scraping with Selenium to provide tailored job\n listings. Applied NLP and machine learning for resume analysis and job recommendations.– Tailored Applications with ATS: Using NLP and large language models to create personalized resumes\n and cover letters based on a custom scoring system. Focused on ethical AI use and user empowerment.",
+      "technologies": "cv, python"
+    }
+  ],
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/diya-shah-b24832226",
+    "github": "https://github.com/DiyaShah7",
+    "codingProfile": ""
+  },
+  "customJobProfile": "data science intern",
+  "desiredJobProfiles": []
+}
