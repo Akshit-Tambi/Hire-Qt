@@ -8,6 +8,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 const Dashboard = () => {
     const [jobs, setJobs] = useState([]);
+    const [bookmarkedJobs, setBookmarkedJobs] = useState([]);
     const [query, setQuery] = useState("");
     const [selectedCategories, setSelectedCategories] = useState({
         location: "",
@@ -20,11 +21,34 @@ const Dashboard = () => {
 
     useEffect(() => {
         setIsLoading(true);
+        // Load jobs data
         fetch("jobs.json").then(res => res.json()).then(data => {
             setJobs(data);
             setIsLoading(false);
         });
+
+        // Load bookmarked jobs from localStorage
+        const savedBookmarks = JSON.parse(localStorage.getItem('bookmarkedJobs') || '[]');
+        setBookmarkedJobs(savedBookmarks);
     }, []);
+
+    // Handle bookmark toggle
+    const handleBookmark = (job, isBookmarking) => {
+        if (isBookmarking) {
+            const newBookmarks = [...bookmarkedJobs, job];
+            setBookmarkedJobs(newBookmarks);
+            localStorage.setItem('bookmarkedJobs', JSON.stringify(newBookmarks));
+        } else {
+            const updatedBookmarks = bookmarkedJobs.filter(bookmark => bookmark.id !== job.id);
+            setBookmarkedJobs(updatedBookmarks);
+            localStorage.setItem('bookmarkedJobs', JSON.stringify(updatedBookmarks));
+        }
+    };
+
+    // Check if a job is bookmarked
+    const isJobBookmarked = (jobId) => {
+        return bookmarkedJobs.some(job => job.id === jobId);
+    };
 
     const handleInputChange = (event) => {
         setQuery(event.target.value);
@@ -44,7 +68,6 @@ const Dashboard = () => {
         return titleMatch;
     });
 
-    // Calculate the Index Range 
     const calculatePageRange = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
@@ -100,7 +123,15 @@ const Dashboard = () => {
 
         const { startIndex, endIndex } = calculatePageRange();
         filteredJobs = filteredJobs.slice(startIndex, endIndex);
-        return filteredJobs.map((data, i) => <Card key={i} data={data} />);
+        
+        return filteredJobs.map((data, i) => (
+            <Card 
+                key={data.id || i} 
+                data={data} 
+                onBookmark={handleBookmark}
+                isBookmarked={isJobBookmarked(data.id)}
+            />
+        ));
     };
 
     const result = filteredData();
@@ -123,15 +154,27 @@ const Dashboard = () => {
                             </>
                     }
                     {/* Pagination */}
-                    {
-                        result.length > 0 ? (
-                            <div className='flex justify-center mt-4 space-x-8'>
-                                <button className='hover:underline' onClick={prevPage} disabled={currentPage === 1}>Previous</button>
-                                <span className='mx-2'>Page {currentPage} of {Math.ceil(filteredItems.length / itemsPerPage)}</span>
-                                <button className='hover:underline' onClick={nextPage} disabled={currentPage === Math.ceil(filteredItems.length / itemsPerPage)}>Next</button>
-                            </div>
-                        ) : ""
-                    }
+                    {result.length > 0 && (
+                        <div className='flex justify-center mt-4 space-x-8'>
+                            <button 
+                                className='hover:underline disabled:opacity-50' 
+                                onClick={prevPage} 
+                                disabled={currentPage === 1}
+                            >
+                                Previous
+                            </button>
+                            <span className='mx-2'>
+                                Page {currentPage} of {Math.ceil(filteredItems.length / itemsPerPage)}
+                            </span>
+                            <button 
+                                className='hover:underline disabled:opacity-50' 
+                                onClick={nextPage} 
+                                disabled={currentPage === Math.ceil(filteredItems.length / itemsPerPage)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
