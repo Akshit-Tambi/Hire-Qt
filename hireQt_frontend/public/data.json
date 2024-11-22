@@ -1,38 +1,41 @@
 {
   "firstName": "Diya",
   "lastName": "Shah",
-  "email": "21uec050@lnmiit.ac.in",
-  "phone": "9168557097",
-  "summary": "",
-  "skills": "",
+  "email": "diya.shah@example.com",
+  "phone": "123-456-7890",
+  "summary": "A highly motivated student specializing in Electronics and Communications, with experience in machine learning algorithms and a passion for deep learning research.",
+  "skills": "Machine Learning, Deep Learning, Data Analysis, Python, TensorFlow",
   "education": [
     {
-      "institution": "",
-      "major": "",
-      "cgpa": ""
+      "institution": "LNMIIT",
+      "major": "Electronics and Communication",
+      "cgpa": "9.2"
     }
   ],
   "workExperience": [
     {
-      "title": "",
-      "company": "",
-      "startMonth": "",
-      "endMonth": "",
-      "description": ""
+      "title": "Data Science Intern",
+      "company": "Deloitte",
+      "startMonth": "2023-06",
+      "endMonth": "2023-08",
+      "description": "Worked on predictive analytics and business intelligence tools."
     }
   ],
   "projects": [
     {
-      "name": "",
-      "description": "",
-      "technologies": ""
+      "name": "NutriAI",
+      "description": "Developed an AI-powered solution to detect malnutrition among infants using facial analysis.",
+      "technologies": "Python, TensorFlow, OpenCV"
     }
   ],
   "links": {
-    "linkedin": "",
-    "github": "",
-    "codingProfile": ""
+    "linkedin": "https://www.linkedin.com/in/diya-shah/",
+    "github": "https://github.com/diyashah",
+    "codingProfile": "https://www.hackerrank.com/diyashah"
   },
-  "customJobProfile": "data science intern",
-  "desiredJobProfiles": []
+  "customJobProfile": "AI Researcher",
+  "desiredJobProfiles": [
+    "Data Scientist",
+    "Machine Learning Engineer"
+  ]
 }

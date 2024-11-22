@@ -4,22 +4,38 @@ import ResumeUpload from '../components/ResumeUpload';
 import { useNavigate } from 'react-router-dom';
 const ProfileSetup = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    summary: '',
-    skills: '',
-    education: [{ institution: '', major: '', cgpa: '' }],
-    workExperience: [{ title: '', company: '', startMonth: '', endMonth: '', description: '' }],
-    projects: [{ name: '', description: '', technologies: '' }],
+    firstName: "Diya",
+    lastName: "Shah",
+    email: "diya.shah@example.com",
+    phone: "123-456-7890",
+    summary: "A highly motivated student specializing in Electronics and Communications, with experience in machine learning algorithms and a passion for deep learning research.",
+    skills: "Machine Learning, Deep Learning, Data Analysis, Python, TensorFlow",
+    education: [
+      { institution: "LNMIIT", major: "Electronics and Communication", cgpa: "9.2" }
+    ],
+    workExperience: [
+      {
+        title: "Data Science Intern",
+        company: "Deloitte",
+        startMonth: "2023-06",
+        endMonth: "2023-08",
+        description: "Worked on predictive analytics and business intelligence tools."
+      }
+    ],
+    projects: [
+      {
+        name: "NutriAI",
+        description: "Developed an AI-powered solution to detect malnutrition among infants using facial analysis.",
+        technologies: "Python, TensorFlow, OpenCV"
+      }
+    ],
     links: {
-      linkedin: '',
-      github: '',
-      codingProfile: ''
+      linkedin: "https://www.linkedin.com/in/diya-shah/",
+      github: "https://github.com/diyashah",
+      codingProfile: "https://www.hackerrank.com/diyashah"
     },
-    customJobProfile: '',
-    desiredJobProfiles: []
+    customJobProfile: "AI Researcher",
+    desiredJobProfiles: ["Data Scientist", "Machine Learning Engineer"]
   });
   const navigate = useNavigate();
   const [resumeFile, setResumeFile] = useState(null);
@@ -169,18 +185,8 @@ const ProfileSetup = () => {
         </div>
         
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
-          {/* Upload Resume Section */}
-          <div className="bg-yellow-50 p-6 rounded-lg">
-            <label className="block text-gray-700 mb-2">Upload Resume</label>
-            <input 
-              type="file" 
-              accept=".pdf" 
-              onChange={ResumeUpload} 
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
-              required 
-            />
-            <hr className="my-4" />
-          </div>
+
+          
 
           {/* Personal Information */}
           <div className="grid md:grid-cols-2 gap-6 bg-yellow-50 p-6 rounded-lg">
@@ -379,6 +385,7 @@ const ProfileSetup = () => {
                     name="description"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
                     placeholder="Describe your project value={project.description}"
+                    value={project.description}
                     onChange={(e) => updateArrayField('projects', index, { description: e.target.value })}
                   />
                 </div>
@@ -485,3 +492,4 @@ const ProfileSetup = () => {
 };
 
 export default ProfileSetup;
+
