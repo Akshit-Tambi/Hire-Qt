@@ -3,9 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiMapPin, FiClock, FiCalendar } from "react-icons/fi";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 
-const Card = ({ data }) => {
-    const navigate = useNavigate();
-    const { id, companyName, companyLogo, jobTitle, minPrice, maxPrice, jobLocation, experienceLevel, postingDate, companyURL } = data;
+const Card = ({ data, onBookmark, isBookmarked }) => {
+    const { id, companyName, companyLogo, jobTitle, minPrice, maxPrice, jobLocation, experienceLevel, postingDate } = data;
+
+    const handleBookmarkClick = (e) => {
+        e.preventDefault(); // Prevent Link click event
+        onBookmark(data, !isBookmarked);
+    };
 
     return (
         <section className='bg-white p-4 rounded-lg shadow-md mb-4 flex items-center'>
@@ -24,16 +28,16 @@ const Card = ({ data }) => {
                 </div>
             </Link>
 
-            {/* Vertical Divider - Positioned Towards Left */}
+            {/* Vertical Divider */}
             <div className="border-l-2 border-gray-300 w-20 h-24 mx-4"></div>
 
             {/* Right Side - Buttons */}
             <div className="flex flex-col justify-center">
                 <button 
-                    className="mb-4 px-4 py-2 text-white bg-cyan-600 rounded-lg transition-transform transform hover:scale-105"
-                    onClick={() => navigate('/bookmarked-jobs')}
+                    onClick={handleBookmarkClick}
+                    className={`mb-4 px-4 py-2 text-white ${isBookmarked ? 'bg-green-600' : 'bg-cyan-600'} rounded-lg transition-transform transform hover:scale-105`}
                 >
-                    Interested
+                    {isBookmarked ? 'Bookmarked' : 'Interested'}
                 </button>
                 <Link 
                     to={`/job/${id}`} 
