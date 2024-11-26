@@ -53,7 +53,7 @@ const JobDescription = () => {
                             <p className="text-gray-600">{jobData.companyName}</p>
                             <div className="flex items-center text-gray-600 mt-2">
                                 <i className="fas fa-briefcase mr-2"></i>
-                                <span>{jobData.experience}</span>
+                                <span>{jobData.experienceLevel}</span>
                                 <span className="mx-2">|</span>
                                 <i className="fas fa-rupee-sign mr-2"></i>
                                 <span>{jobData.salary}</span>
@@ -64,17 +64,29 @@ const JobDescription = () => {
                             </div>
                             <div className="flex items-center text-gray-600 mt-2">
                                 <i className="fas fa-map-pin mr-2"></i>
-                                <span>Hiring office located in {jobData.hiringOffice}</span>
+                                <span>Hiring office located in {jobData.jobLocation}</span>
                             </div>
                             <hr className="my-4" />
                             <div className="flex justify-between items-center text-gray-600">
-                                <span>Posted: {jobData.postedDate}</span>
+                                <span>Posted: {jobData.postingDate}</span>
                             </div>
-                            <div className="flex justify-end mt-4">
-                                <button className="border border-blue-500 text-blue-500 font-bold rounded-full flex items-center gap-3 hover:bg-gray-100 transition duration-200 px-4 py-2 mr-2">
-                                    BookMark
+                            <div className="flex flex-col justify-end mt-4">
+                                <button 
+                                    className="bg-cyan-500 text-white font-bold rounded-full flex items-center gap-3 hover:bg-cyan-600 transition duration-200 px-4 py-2 mb-2"
+                                    onClick={() => {
+                                        // Add your bookmark functionality here
+                                        console.log("Bookmarked!");
+                                    }}
+                                >
+                                    Bookmark
                                 </button>
                                 <Button1 text="Apply on company site" onClick={() => window.open(jobData.jobURL, '_blank')} />
+                                <button 
+                                    className="bg-cyan-500 text-white font-bold rounded-full flex items-center gap-3 hover:bg-cyan-600 transition duration-200 px-4 py-2 mt-2"
+                                    onClick={() => window.location.href = 'http://localhost:8502/'}
+                                >
+                                    Proceed for resume and cover letter customization
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -85,7 +97,7 @@ const JobDescription = () => {
                             <h2 className="text-xl font-semibold text-gray-900">About The Job</h2>
                             <ReactMarkdown className="text-gray-600">{jobData.description}</ReactMarkdown>
                         </div>
-                    </div>
+                    </ div>
                 </div>
             </div>
             <footer className="w-full bg-white py-4 flex justify-center items-center shadow-inner">

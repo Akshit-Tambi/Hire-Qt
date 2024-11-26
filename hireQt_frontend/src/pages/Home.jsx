@@ -121,7 +121,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-black rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/dashboard')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/dashboard')}>
                   Try It Out
                 </button>
               </div>
@@ -140,7 +140,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/resume-parser')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => window.location.href = 'http://localhost:8501/'}>
                   Try It Out
                 </button>
               </div>
@@ -159,7 +159,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/resume-generator')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => window.location.href = 'http://localhost:8501/'}>
                   Try It Out
                 </button>
               </div>
@@ -178,7 +178,7 @@ const Home = () => {
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/application-tracking')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/bookmark')}>
                   Try It Out
                 </button>
               </div>
@@ -187,17 +187,17 @@ const Home = () => {
             {/* Feature 5 */}
             <div className="flex items-center w-full p-6 bg-blue-50 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
               <div className="flex-1 pr-4">
-                <h3 className="text-2xl font-bold text-gray-800">Cold Emailing</h3>
-                <p className="text-gray-600">Reach out to potential employers with personalized cold emails that stand out.</p>
+                <h3 className="text-2xl font-bold text-gray-800">Live Resume Changer</h3>
+                <p className="text-gray-600">Change details while simultaneously looking at the resume template.</p>
                 <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Customizable email templates</li>
-                  <li>• AI-generated subject lines</li>
-                  <li>• Follow-up reminders</li>
+                  <li>• Customizable templates</li>
+                  <li>• User friendly</li>
+                  <li>• To-be-implemented (More ATS friendly templates)</li>
                 </ul>
               </div>
               <div className="border-l-2 border-gray-300 h-24 mx-4"></div>
               <div className="flex justify-center items-center w-1/3">
-                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => navigate('/cold-emailing')}>
+                <button className="px-6 py-2 text-white bg-cyan-600 rounded-lg shadow-lg transition-transform transform hover:scale-105" onClick={() => window.location.href = ('http://localhost:3001/')}>
                   Try It Out
                 </button>
               </div>

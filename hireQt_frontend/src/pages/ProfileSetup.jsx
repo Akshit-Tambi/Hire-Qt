@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CustomSelect from '../components/CustomSelect';
 import ResumeUpload from '../components/ResumeUpload';
 import { useNavigate } from 'react-router-dom';
+
 const ProfileSetup = () => {
   const [formData, setFormData] = useState({
     firstName: "Diya",
@@ -35,8 +36,9 @@ const ProfileSetup = () => {
       codingProfile: "https://www.hackerrank.com/diyashah"
     },
     customJobProfile: "AI Researcher",
-    desiredJobProfiles: ["Data Scientist", "Machine Learning Engineer"]
+    desiredJobProfiles: [] // Initialize as an empty array
   });
+
   const navigate = useNavigate();
   const [resumeFile, setResumeFile] = useState(null);
   const domainsDataSource = "/domains.json";
@@ -68,7 +70,7 @@ const ProfileSetup = () => {
 
   const handleJobProfileToggle = (profile) => {
     setFormData(prev => ({
-      ...prev,
+        ...prev,
       desiredJobProfiles: prev.desiredJobProfiles.includes(profile)
         ? prev.desiredJobProfiles.filter(p => p !== profile)
         : [...prev.desiredJobProfiles, profile]
@@ -254,7 +256,7 @@ const ProfileSetup = () => {
                   <CustomSelect
                     placeholder="Type College Name"
                     dataSource={collegesDataSource}
-                    onSelect={(value) => handleChange('college', value)}
+                    onSelect={(e) => updateArrayField('education', index, { institution: e.target.value })}
                   />
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -324,7 +326,7 @@ const ProfileSetup = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-gray-700 mb-2">Start Month</label>
-                    <input 
+ <input 
                       type="month" 
                       name="startMonth"
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
@@ -334,7 +336,8 @@ const ProfileSetup = () => {
                   </div>
                   <div>
                     <label className="block text-gray-700 mb-2">End Month</label>
-                    <input type="month" 
+                    <input 
+                      type="month" 
                       name="endMonth"
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
                       value={work.endMonth}
@@ -384,7 +387,7 @@ const ProfileSetup = () => {
                   <textarea 
                     name="description"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
-                    placeholder="Describe your project value={project.description}"
+                    placeholder="Describe your project"
                     value={project.description}
                     onChange={(e) => updateArrayField('projects', index, { description: e.target.value })}
                   />

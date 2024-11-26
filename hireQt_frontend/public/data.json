@@ -34,8 +34,5 @@
     "codingProfile": "https://www.hackerrank.com/diyashah"
   },
   "customJobProfile": "AI Researcher",
-  "desiredJobProfiles": [
-    "Data Scientist",
-    "Machine Learning Engineer"
-  ]
+  "desiredJobProfiles": []
 }
