@@ -1,6 +1,6 @@
 import { apiConnector } from "../apiConnector";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-
+import FormData from "form-data"; 
 
 export const signup = async (firstname, lastname, email, password) => {
   try {
@@ -54,6 +54,44 @@ export const signin = async (email, password) => {
     return data.token;
   } catch (error) {
     console.log("Login error...", error.message);
+    return null;
+  }
+};
+
+
+export const upload = async (file) => {
+  try {
+    // Create a new FormData instance
+    const formData = new FormData();
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    formData.append('resume', file);
+
+    const response = await fetch("http://localhost:3000/api/v1/profile/upload-resume", {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`
+        // Note: Do NOT manually set Content-Type for FormData
+      },
+      body: formData,
+    });
+
+    console.log('Response status:', response.status);
+
+    const data = await response.json();
+    console.log('Response data:', data);
+
+    if (!response.ok) {
+      throw new Error(data.message || "Resume upload failed");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Upload error:", error);
     return null;
   }
 };

@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { upload } from '../services/operations/authApi';
 
 const ResumeUpload = () => {
-  const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
   const [resumeData, setResumeData] = useState(null);
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+
     if (!file) {
       setUploadStatus('Please select a file');
       return;
@@ -21,18 +18,16 @@ const ResumeUpload = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('pdf_file', file);
+    try { 
+      const response = await upload(file); 
 
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/parse_resume', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setUploadStatus('Resume uploaded successfully!');
-      setResumeData(response.data);
-      console.log(response.data);
+      if (response) {
+        setUploadStatus('Resume uploaded successfully!');
+        setResumeData(response.data);
+        console.log(response.data);
+      } else {
+        setUploadStatus('Failed to upload resume.');
+      }
     } catch (error) {
       setUploadStatus('Failed to upload resume.');
       console.error('Error:', error);
@@ -42,17 +37,37 @@ const ResumeUpload = () => {
   return (
     <div className="resume-upload">
       <h2>Upload Your Resume</h2>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="file" 
-          onChange={handleFileChange} 
-          accept=".pdf"
-        />
-        <button type="submit">Upload Resume</button>
-      </form>
+      <input 
+        type="file" 
+        onChange={handleFileChange} 
+        accept=".pdf"
+      />
       {uploadStatus && <p>{uploadStatus}</p>}
+      {resumeData && <pre>{JSON.stringify(resumeData, null, 2)}</pre>} {/* Display parsed resume data */}
     </div>
   );
 };
 
 export default ResumeUpload;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

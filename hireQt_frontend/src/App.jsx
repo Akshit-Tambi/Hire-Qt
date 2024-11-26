@@ -8,7 +8,7 @@ import Dashboard from './pages/Dashboard';
 import ProfileSetup from "./pages/ProfileSetup";
 import JobDescription from "./pages/JobDescription";
 import Bookmark from "./pages/Bookmark";
-
+import Resume from "./pages/Resume";
 function App() {
   return (
     <>
@@ -20,6 +20,7 @@ function App() {
         <Route path="/dashboard" element= {<Dashboard/>}/>
         <Route path="/job/:id" element={<JobDescription/>}/>
         <Route path="/bookmark"element={<Bookmark/>}/>
+        <Route path="/resume"element={<Resume/>}/>
       </Routes>
     </>
   )
