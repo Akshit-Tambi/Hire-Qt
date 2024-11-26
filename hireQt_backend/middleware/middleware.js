@@ -9,7 +9,7 @@ function authMiddleware(req , res , next){
     }
     const token= authHeader.split(' ')[1];
     try{
-        const decoded = jwt.verify(token,JWT_Secret);
+        const decoded = jwt.verify(token,JWT_Secret.JWT_SECRET);
         if(decoded.userId){
             req.userId=decoded.userId;
             next();

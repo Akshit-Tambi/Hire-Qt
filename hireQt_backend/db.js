@@ -69,6 +69,27 @@ const urlValidator = {
   message: 'Please enter a valid URL'
 };
 
+
+
+
+// Resume saving
+const ResumeSchema = new mongoose.Schema({
+  userID : {
+    type : mongoose.Schema.Types.ObjectId, ref : 'User',
+  },
+  resume : String,
+  title : String
+},{collection:"resumes"})
+
+
+const Resume = mongoose.model('Resume',ResumeSchema)
+/////////////////////////////////////////////////////////
+
+
+
+
+
+
 const UserResume = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -402,6 +423,7 @@ const JobPreferences = mongoose.model('JobPreferences', JobPreferencesSchema);
 
 module.exports = {
     User,
+    Resume,
     UserProfile,
     JobPreferences
 };
