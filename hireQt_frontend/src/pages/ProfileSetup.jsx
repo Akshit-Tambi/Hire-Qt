@@ -1,48 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomSelect from '../components/CustomSelect';
-import ResumeUpload from '../components/ResumeUpload';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-const ProfileSetup = () => {
+const ProfileSetup = ({ onChange }) => {
+  const location = useLocation();
+  const { response } = location.state || {};
+  const [jobProfiles, setJobProfiles] = useState([]);
+
+  console.log(response)
   const [formData, setFormData] = useState({
-    firstName: "Diya",
-    lastName: "Shah",
-    email: "diya.shah@example.com",
-    phone: "123-456-7890",
-    summary: "A highly motivated student specializing in Electronics and Communications, with experience in machine learning algorithms and a passion for deep learning research.",
-    skills: "Machine Learning, Deep Learning, Data Analysis, Python, TensorFlow",
-    education: [
-      { institution: "LNMIIT", major: "Electronics and Communication", cgpa: "9.2" }
-    ],
-    workExperience: [
-      {
-        title: "Data Science Intern",
-        company: "Deloitte",
-        startMonth: "2023-06",
-        endMonth: "2023-08",
-        description: "Worked on predictive analytics and business intelligence tools."
-      }
-    ],
-    projects: [
-      {
-        name: "NutriAI",
-        description: "Developed an AI-powered solution to detect malnutrition among infants using facial analysis.",
-        technologies: "Python, TensorFlow, OpenCV"
-      }
-    ],
+    firstName: response?.firstName || "",
+    lastName: response?.lastName || "",
+    email: response?.email || "",
+    phone: response?.phone || "",
+    summary: response?.summary || "",
+    skills: Array.isArray(response?.skills) ? response.skills.join(", ") : "",
+    education: response?.education?.length ? response.education.map(edu => ({
+      institution: edu.institution || "",
+      major: edu.major || "",
+      cgpa: edu.cgpa || ""
+    })) : [{ institution: "", major: "", cgpa: "" }],
+    workExperience: response?.workExperience?.length ? response.workExperience.map(work => ({
+      title: work.title || "",
+      company: work.company || "",
+      startMonth: work.startMonth || "",
+      endMonth: work.endMonth || "",
+      description: work.description || ""
+    })) : [{ title: "", company: "", startMonth: "", endMonth: "", description: "" }],
+    projects: response?.projects?.length ? response.projects.map(proj => ({
+      name: proj.title || "",
+      description: proj.description || "",
+      technologies: ""
+    })) : [{ name: "", description: "", technologies: "" }],
     links: {
-      linkedin: "https://www.linkedin.com/in/diya-shah/",
-      github: "https://github.com/diyashah",
-      codingProfile: "https://www.hackerrank.com/diyashah"
+      linkedin: "",
+      github: "",
+      codingProfile: ""
     },
-    customJobProfile: "AI Researcher",
-    desiredJobProfiles: [] // Initialize as an empty array
+    customJobProfile: "",
+    desiredJobProfiles: []
   });
 
   const navigate = useNavigate();
   const [resumeFile, setResumeFile] = useState(null);
   const domainsDataSource = "/domains.json";
   const collegesDataSource = "/colleges.json";
+  useEffect(() => {
+    async function fetchDomains() {
+      try {
+        const response = await fetch(domainsDataSource);
+        if (!response.ok) {
+          throw new Error("Failed to fetch domains data");
+        }
+        const data = await response.json();
+        setJobProfiles(data.domains || []); // Set job profiles in state
+      } catch (error) {
+        console.error("Error fetching domains:", error);
+        setJobProfiles([]); // Set to empty array on error
+      }
+    }
+
+    fetchDomains();
+  }, []);
+
+    const [selectedProfiles, setSelectedProfiles] = useState([]);
+    const handleProfileSelect = (profile) => {
+      // Check if profile is already selected
+      if (selectedProfiles.includes(profile)) return;
+
+      // Limit to 5 profiles
+      if (selectedProfiles.length < 5) {
+        const newProfiles = [...selectedProfiles, profile];
+        setSelectedProfiles(newProfiles);
+        onChange(newProfiles);
+      }
+    };
+
+    const handleRemoveProfile = (profileToRemove) => {
+      const newProfiles = selectedProfiles.filter(profile => profile !== profileToRemove);
+      setSelectedProfiles(newProfiles);
+      onChange(newProfiles);
+    };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,200 +107,130 @@ const ProfileSetup = () => {
     }));
   };
 
-  const handleJobProfileToggle = (profile) => {
+  const deleteArrayField = (field, index) => {
     setFormData(prev => ({
-        ...prev,
-      desiredJobProfiles: prev.desiredJobProfiles.includes(profile)
-        ? prev.desiredJobProfiles.filter(p => p !== profile)
-        : [...prev.desiredJobProfiles, profile]
+      ...prev,
+      [field]: prev[field].length > 1 
+        ? prev[field].filter((_, i) => i !== index)
+        : [field === 'education' 
+            ? { institution: '', major: '', cgpa: '' }
+            : field === 'workExperience' 
+              ? { title: '', company: '', startMonth: '', endMonth: '', description: '' }
+              : { name: '', description: '', technologies: '' }]
     }));
   };
 
-  const handleResumeUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setResumeFile(file);
-      const formData = new FormData();
-      formData.append('pdf_file', file);
 
-      try {
-        const response = await fetch('http://127.0.0.1:8000/parse_resume', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await response.json();
-
-        // Assuming your API returns an object with the necessary fields
-        setFormData(prev => ({
-          ...prev,
-          firstName: data.firstName || prev.firstName,
-          lastName: data.lastName || prev.lastName,
-          email: data.email || prev.email,
-          phone: data.phone || prev.phone,
-          summary: data.summary || prev.summary,
-          skills: ' '.join(data.skills) || prev.skills,
-          education: [data.education] || prev.education,
-          workExperience: data.work_experience || prev.workExperience,
-          projects: data.projects || prev.projects
-        }));
-      } catch (error) {
-        console.error('Error uploading resume:', error);
-      }
-    }
+  const handleJobProfilesChange = (profiles) => {
+    setFormData(prev => ({
+      ...prev,
+      desiredJobProfiles: profiles
+    }));
   };
+
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Convert form data to JSON string for data.json
-    const jsonData = JSON.stringify(formData, null, 2);
-  
-    // Create a Blob from the JSON string for data.json
-    const dataBlob = new Blob([jsonData], { type: 'application/json' });
-  
-    // Create a link element for data.json
-    const dataLink = document.createElement('a');
-    dataLink.href = URL.createObjectURL(dataBlob);
-    dataLink.download = 'data.json'; // Name of the file to be downloaded
-  
-    // Append to the body (required for Firefox)
-    document.body.appendChild(dataLink);
-  
-    // Trigger the download for data.json
-    dataLink.click();
-  
-    // Clean up and remove the link
-    document.body.removeChild(dataLink);
-  
-    // Call the additional API to get jobs data
-    try {
-      const response = await fetch('http://127.0.0.1:8000/scrape', { // Replace with your API endpoint
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ profile: formData.customJobProfile }), // Sending customJobProfile as input
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to fetch jobs data');
-      }
-  
-      const jobsData = await response.json();
-  
-      // Convert jobs data to JSON string for jobs.json
-      const jobsJsonData = JSON.stringify(jobsData, null, 2);
-  
-      // Create a Blob from the jobs JSON string for jobs.json
-      const jobsBlob = new Blob([jobsJsonData], { type: 'application/json' });
-  
-      // Create a link element for jobs.json
-      const jobsLink = document.createElement('a');
-      jobsLink.href = URL.createObjectURL(jobsBlob);
-      jobsLink.download = 'jobs.json'; // Name of the file to be downloaded
-  
-      // Append to the body (required for Firefox)
-      document.body.appendChild(jobsLink);
-  
-      // Trigger the download for jobs.json
-      jobsLink.click();
-  
-      // Clean up and remove the link
-      document.body.removeChild(jobsLink);
-  
-      // Navigate to the dashboard
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 15000);
-    } catch (error) {
-      console.error('Error during submission:', error);
-      // Optionally handle the error (e.g., show an alert or a message to the user)
-    }
+    // Handle form submission logic here...
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100 flex items-center justify-center p-6">
-      <div className="w-full max-w-4xl bg-yellow-50 rounded-2xl shadow-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-cyan-700 to-cyan-700 text-white py-6 px-8">
-          <h1 className="text-3xl font -bold text-center">Profile Setup</h1>
+    <div className="min-h-screen bg-gradient-to-br from-amber-100 to-cyan-300 flex items-center justify-center p-6">
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-white to-white text-cyan-800 py-6 px-8">
+          <h1 className="text-3xl font-bold text-center">Profile Setup</h1>
         </div>
         
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
 
-          
-
           {/* Personal Information */}
-          <div className="grid md:grid-cols-2 gap-6 bg-yellow-50 p-6 rounded-lg">
-            <div>
-              <label className="block text-gray-700 mb-2">First Name</label>
-              <input 
-                type="text" 
-                name="firstName" 
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
-                placeholder="Enter first name"
-                value={formData.firstName}
-                onChange={handleChange}
-                required 
-              />
+          <div className="bg-amber-100 p-6 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold text-cyan-800-800 mb-4">Personal Information</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-cyan-800-700 mb-2">First Name</label>
+                <input 
+                  type="text" 
+                  name="firstName" 
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
+                  placeholder="Enter first name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              <div>
+                <label className="block text-cyan-800-700 mb-2">Last Name</label>
+                <input 
+                  type="text" 
+                  name="lastName" 
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
+                  placeholder="Enter last name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-gray-700 mb-2">Last Name</label>
-              <input 
-                type="text" 
-                name="lastName" 
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
-                placeholder="Enter last name"
-                value={formData.lastName}
-                onChange={handleChange}
-                required 
-              />
+            
+            <div className="grid md:grid-cols-2 gap-6 mt-4">
+              <div>
+                <label className="block text-cyan-800-700 mb-2">Email</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
+                  placeholder="Enter email address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              <div>
+                <label className="block text-cyan-800-700 mb-2">Phone Number</label>
+                <input 
+                  type="tel" 
+                  name="phone" 
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
+                  placeholder="Enter phone number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
             </div>
           </div>
 
-          {/* Contact Information */}
-          <div className="bg-yellow-50 p-6 rounded-lg space-y-4">
-            <div>
-              <label className="block text-gray-700 mb-2">Email</label>
-              <input 
-                type="email" 
-                name="email" 
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
-                placeholder="Enter email address"
-                value={formData.email}
-                onChange={handleChange}
-                required 
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 mb-2">Phone Number</label>
-              <input 
-                type="tel" 
-                name="phone" 
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
-                placeholder="Enter phone number"
-                value={formData.phone}
-                onChange={handleChange}
-                required 
-              />
-            </div>
+          {/* Summary Section */}
+          <div className="bg-amber-100 p-6 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold text-cyan-800-800 mb-4">Summary</h2>
+            <textarea 
+              name="summary"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
+              placeholder="Enter a brief summary about yourself"
+              value={formData.summary}
+              onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
+            />
           </div>
 
           {/* Education */}
-          <div className="bg-yellow-50 p-6 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Education</h2>
+          <div className="bg-amber-100 p-6 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold text-cyan-800-800 mb-4">Education</h2>
             {formData.education.map((edu, index) => (
-              <div key={index} className="space-y-4">
+              <div key={index} className="bg-teal-50 p-4 rounded-lg shadow-md mb-6">
                 <div>
-                  <label className="block text-gray-700 mb-2">Institution</label>
+                  <label className="block text-cyan-800-700 mb-2">Institution</label>
                   <CustomSelect
                     placeholder="Type College Name"
                     dataSource={collegesDataSource}
                     onSelect={(e) => updateArrayField('education', index, { institution: e.target.value })}
                   />
                 </div>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-4 mb-5">
                   <div>
-                    <label className="block text-gray-700 mb-2">Major</label>
+                    <label className="block text-cyan-800-700 mb-2">Major</label>
                     <input 
                       type="text" 
                       name="major"
@@ -272,7 +241,7 @@ const ProfileSetup = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 mb-2">CGPA</label>
+                    <label className="block text-cyan-800-700 mb-2">CGPA</label>
                     <input 
                       type="number" 
                       name="cgpa"
@@ -285,23 +254,34 @@ const ProfileSetup = () => {
                 </div>
               </div>
             ))}
-            <button 
-              type="button" 
-              onClick={() => addArrayField('education')} 
-              className="mt-4 bg-cyan-600 text-white px-4 py-2 rounded-lg"
-            >
-              Add Education
-            </button>
+            <div className="flex justify-between items-center mt-4">
+              <button 
+                type="button" 
+                onClick={() => addArrayField('education')} 
+                className="bg-cyan-600 text-white px-4 py-2 rounded-lg"
+              >
+                Add Education
+              </button>
+              {formData.education.length > 1 && (
+                <button 
+                  type="button" 
+                  onClick={() => deleteArrayField('education', formData.education.length - 1)} 
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Delete Last Education
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Work Experience */}
-          <div className="bg-yellow-50 p-6 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Work Experience</h2>
+          <div className="bg-amber-100 p-6 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold text-cyan-800-800 mb-4">Work Experience</h2>
             {formData.workExperience.map((work, index) => (
-              <div key={index} className="space-y-4">
+              <div key={index} className="bg-teal-50 p-4 rounded-lg shadow-md mb-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 mb-2">Job Title</label>
+                    <label className="block text-cyan-800-700 mb-2">Job Title</label>
                     <input 
                       type="text" 
                       name="title"
@@ -312,7 +292,7 @@ const ProfileSetup = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 mb-2">Company</label>
+                    <label className="block text-cyan-800-700 mb-2">Company</label>
                     <input 
                       type="text" 
                       name="company"
@@ -323,10 +303,10 @@ const ProfileSetup = () => {
                     />
                   </div>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-4 mt-4">
                   <div>
-                    <label className="block text-gray-700 mb-2">Start Month</label>
- <input 
+                    <label className="block text-cyan-800-700 mb-2">Start Month</label>
+                    <input 
                       type="month" 
                       name="startMonth"
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
@@ -335,18 +315,18 @@ const ProfileSetup = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 mb-2">End Month</label>
+                    <label className="block text-cyan-800-700 mb-2">End Month</label>
                     <input 
                       type="month" 
                       name="endMonth"
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 mb-5" 
                       value={work.endMonth}
                       onChange={(e) => updateArrayField('workExperience', index, { endMonth: e.target.value })}
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-gray-700 mb-2">Job Description</label>
+                  <label className="block text-cyan-800-700 mb-2">Job Description</label>
                   <textarea 
                     name="description"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
@@ -357,22 +337,33 @@ const ProfileSetup = () => {
                 </div>
               </div>
             ))}
-            <button 
-              type="button" 
-              onClick={() => addArrayField('workExperience')} 
-              className="mt-4 bg-cyan-600 text-white px-4 py-2 rounded-lg"
-            >
-              Add More Work Experience
-            </button>
+            <div className="flex justify-between items-center mt-4">
+              <button 
+                type="button" 
+                onClick={() => addArrayField('workExperience')} 
+                className="bg-cyan-600 text-white px-4 py-2 rounded-lg"
+              >
+                Add Work Experience
+              </button>
+              {formData.workExperience.length > 1 && (
+                <button 
+                  type="button" 
+                  onClick={() => deleteArrayField('workExperience', formData.workExperience.length - 1)} 
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Delete Last Work Experience
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Projects */}
-          <div className="bg-yellow-50 p-6 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Projects</h2>
+          <div className="bg-amber-100 p-6 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold text-cyan-800-800 mb-4">Projects</h2>
             {formData.projects.map((project, index) => (
-              <div key={index} className="space-y-4">
+              <div key={index} className="bg-teal-50 p-4 rounded-lg shadow-md mb-4">
                 <div>
-                  <label className="block text-gray-700 mb-2">Project Name</label>
+                  <label className="block text-cyan-800-700 mb-2">Project Name</label>
                   <input 
                     type="text" 
                     name="name"
@@ -383,7 +374,7 @@ const ProfileSetup = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 mb-2">Project Description</label>
+                  <label className="block text-cyan-800-700 mb-2">Project Description</label>
                   <textarea 
                     name="description"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500" 
@@ -393,7 +384,7 @@ const ProfileSetup = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 mb-2">Technologies Used</label>
+                  <label className="block text-cyan-800-700 mb-2">Technologies Used</label>
                   <input 
                     type="text" 
                     name="technologies"
@@ -405,37 +396,76 @@ const ProfileSetup = () => {
                 </div>
               </div>
             ))}
-            <button 
-              type="button" 
-              onClick={() => addArrayField('projects')} 
-              className="mt-4 bg-cyan-600 text-white px-4 py-2 rounded-lg"
-            >
-              Add More Projects
-            </button>
-          </div>
-
-          {/* Job Profile */}
-          <div className="bg-yellow-50 p-6 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Desired Job Profile</h2>
-            <div>
-              <label className="block text-gray-700 mb-2">Custom Job Profile</label>
-              <input 
-                type="text" 
-                name="customJobProfile"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500" 
-                placeholder="Enter your desired job profile"
-                value={formData.customJobProfile}
-                onChange={handleChange}
-              />
+            <div className="flex justify-between items-center mt-4">
+              <button 
+                type="button" 
+                onClick={() => addArrayField('projects')} 
+                className="bg-cyan-600 text-white px-4 py-2 rounded-lg"
+              >
+                Add Project
+              </button>
+              {formData.projects.length > 1 && (
+                <button 
+                  type="button" 
+                  onClick={() => deleteArrayField('projects', formData.projects.length - 1)} 
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Delete Last Project
+                </button>
+              )}
             </div>
           </div>
 
+          {/* Job Profile */}
+          <div className="bg-amber-100 p-6 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold text-cyan-800 mb-4">Desired Job Profiles</h2>
+            
+            {/* Dropdown for selecting profiles */}
+            <select 
+              onChange={(e) => handleProfileSelect(e.target.value)}
+              value=""
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 mb-4"
+            >
+              <option value="" disabled>Select Job Profiles (Max 5)</option>
+              {jobProfiles
+                .filter(profile => !selectedProfiles.includes(profile))
+                .map(profile => (
+                  <option key={profile} value={profile}>{profile}</option>
+                ))
+              }
+            </select>
+
+            {/* Selected Profiles */}
+            <div className="flex flex-wrap gap-2">
+              {selectedProfiles.map(profile => (
+                <div 
+                  key={profile} 
+                  className="bg-purple-200 px-3 py-1 rounded-full flex items-center"
+                >
+                  {profile}
+                  <button 
+                    onClick={() => handleRemoveProfile(profile)}
+                    className="ml-2 text-red-600  hover:text-red-800"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {selectedProfiles.length > 0 && (
+              <p className="text-sm text-gray-600 mt-2">
+                {5 - selectedProfiles.length} profile slot(s) remaining
+              </p>
+            )}
+          </div>
+
           {/* Links Section */}
-          <section className="bg-yellow-50 p-6 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Professional Links</h2>
+          <section className="bg-amber-100 p-6 rounded-lg shadow-md mb-6">
+            <h2 className="text-xl font-semibold text-cyan-800-800 mb-4">Professional Links</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <label className="block text-gray-700">LinkedIn Profile</label>
+                <label className="block text-cyan-800-700">LinkedIn Profile</label>
                 <input 
                   type="url" 
                   name="linkedin" 
@@ -449,7 +479,7 @@ const ProfileSetup = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-gray-700">GitHub Profile</label>
+                <label className="block text-cyan-800-700">GitHub Profile</label>
                 <input 
                   type="url" 
                   name="github" 
@@ -463,7 +493,7 @@ const ProfileSetup = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-gray-700">Coding Profile</label>
+                <label className="block text-cyan-800-700">Coding Profile</label>
                 <input 
                   type="url" 
                   name="codingProfile" 
@@ -495,4 +525,3 @@ const ProfileSetup = () => {
 };
 
 export default ProfileSetup;
-

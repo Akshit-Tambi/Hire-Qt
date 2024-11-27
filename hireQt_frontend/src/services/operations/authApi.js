@@ -95,3 +95,42 @@ export const upload = async (file) => {
     return null;
   }
 };
+
+
+
+export const save_to_db = async (file) => {
+  try {
+    // Create a new FormData instance
+    const formData = new FormData();
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    formData.append('resume', file);
+
+    const response = await fetch("http://localhost:3000/api/v1/profile/upload", {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`
+        // Note: Do NOT manually set Content-Type for FormData
+      },
+      body: formData,
+    });
+
+    console.log('Response status:', response.status);
+
+    const data = await response.json();
+    console.log('Response data:', data);
+
+    if (!response.ok) {
+      throw new Error(data.message || "Resume upload failed");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Upload error:", error);
+    return null;
+  }
+};

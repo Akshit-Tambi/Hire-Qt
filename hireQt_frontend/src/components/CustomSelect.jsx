@@ -7,6 +7,11 @@ const CustomSelect = ({
 }) => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && results.length > 0) {
+      handleClick(results[0]); // Select the first result
+    }
+  };
 
   useEffect(() => {
     if (input) {
@@ -60,10 +65,11 @@ const CustomSelect = ({
   return (
     <div className="bg-white w-full rounded-lg py-3 shadow-custom">
       <input
-        className="bg-transparent border-0 rounded-none h-full w-full outline-none ml-1.5 text-xl"
+        className="bg-transparent border-0 rounded-none h-full w-full outline-none ml-1.5"
         placeholder={placeholder}
         value={input}
         onChange={(e) => handleChange(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       {results.length > 0 && (
         <div className="w-full bg-white flex flex-col shadow-custom rounded-lg mt-1 max-h-80 overflow-y-scroll">

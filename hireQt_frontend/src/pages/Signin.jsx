@@ -37,7 +37,7 @@ const Signin = () => {
       })
       console.log(formData);
       setShowError(false);
-      navigate("/profile");
+      navigate("/resume");
     }else{
       setShowError(true);
     }

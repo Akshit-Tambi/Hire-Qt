@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { FileUp, CheckCircle2 } from 'lucide-react';
-import { upload } from '../services/operations/authApi';
+import { FileUp, CheckCircle2, ArrowRight } from 'lucide-react';
+import { upload, save_to_db } from '../services/operations/authApi';
+import { useNavigate } from 'react-router-dom';
 
 const Resume = () => {
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleFileChange = async (event) => {
     const selectedFile = event.target.files[0];
@@ -33,10 +35,15 @@ const Resume = () => {
       formData.append('resume', fileToUpload);
 
       const response = await upload(fileToUpload);
+      const db_response = await save_to_db(fileToUpload)
       
       // Assuming successful upload sets uploadSuccess to true
       setUploadSuccess(true);
       console.log('Resume uploaded:', response);
+      console.log('Resume saved in mongodb:', db_response);
+      setTimeout(() => {
+        navigate('/profile', { state: { response } });
+      }, 500);
     } catch (error) {
       console.error("Upload error:", error);
       alert('Failed to upload resume. Please try again.');
@@ -53,8 +60,13 @@ const Resume = () => {
     }
   };
 
+  const proceedWithoutResume = () => {
+    // Navigate to the next page without uploading a resume
+    navigate('/profile');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-100 to-cyan-300 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-100 to-cyan-300 p-4">
       <div className="w-full max-w-md bg-white shadow-2xl rounded-xl p-8 transform transition-all hover:scale-105">
         <h2 className="text-3xl font-bold text-center text-cyan-800 mb-6">
           Upload Your Resume
@@ -120,6 +132,19 @@ const Resume = () => {
               } text-white py-3 rounded-lg transition`}
             >
               {isUploading ? 'Uploading...' : 'Upload'}
+            </button>
+          </div>
+        )}
+
+        {/* Proceed without Resume button */}
+        {!file && !uploadSuccess && (
+          <div className="mt-6">
+            <button 
+              onClick={proceedWithoutResume}
+              className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition flex items-center justify-center space-x-2"
+            >
+              <span>Proceed without Resume</span>
+              <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         )}
